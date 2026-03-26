@@ -1,0 +1,66 @@
+# ===========================
+# Gradle
+# ===========================
+.gradle/
+build/
+out/
+bin/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ===========================
+# IDE
+# ===========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+.vscode/
+
+# ===========================
+# Kotlin / Java compiled
+# ===========================
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# ===========================
+# Secrets & Environment
+# ===========================
+.env
+.env.*
+application-local.yaml
+application-local.yml
+application-secret.yaml
+application-secret.yml
+**/src/main/resources/application-dev.yaml
+**/src/main/resources/application-prod.yaml
+
+# ===========================
+# Logs
+# ===========================
+*.log
+bootRun.log
+logs/
+hs_err_pid*.log
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Spring Boot
+# ===========================
+target/
+
+# ===========================
+# Test output
+# ===========================
+test-results/

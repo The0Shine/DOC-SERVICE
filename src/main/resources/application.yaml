@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: Doc-Service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/horob1_docub_doc_service
+    username: postgres
+    password: 2410
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 2410
+      timeout: 5000ms
+      database: 3
+  kafka:
+    bootstrap-servers: localhost:7092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        security.protocol: SASL_PLAINTEXT
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="horob1" password="2410";
+    consumer:
+      group-id: doc-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.horob1.*"
+        security.protocol: SASL_PLAINTEXT
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="horob1" password="2410";
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 55MB
+
+server:
+  port: 9200
+
+eureka:
+  instance:
+    appname: DOC-SERVICE
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      docService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+
+minio:
+  endpoint: http://localhost:9090
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket: docube-documents
+
+sepay:
+  api-key: ${SEPAY_API_KEY:helo}
+  bank-account: ${SEPAY_BANK_ACCOUNT:VQRQAEYKB9868}
+  bank-code: ${SEPAY_BANK_CODE:MBBank}
+  qr-base-url: https://qr.sepay.vn/img
